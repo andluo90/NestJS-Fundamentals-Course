@@ -1,5 +1,13 @@
 import { registerAs } from '@nestjs/config';
 
-export default registerAs('coffees', () => ({
+interface Coffees {
+  foo:string
+}
+
+export {
+  Coffees
+}
+
+export default registerAs('coffees', ():Coffees => ({
   foo: 'bar',
 }));

@@ -9,7 +9,7 @@ import { Flavor } from './entities/flavor.entity';
 import { Event } from 'src/events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
 import { ConfigService, ConfigType } from '@nestjs/config';
-import coffeesConfig from './config/coffees.config';
+import coffeesConfig,{Coffees} from './config/coffees.config';
 
 @Injectable() // == @Injectable({ scope: Scope.DEFAULT })
 export class CoffeesService {
@@ -22,7 +22,8 @@ export class CoffeesService {
     @Inject(COFFEE_BRANDS) coffeeBrands: string[],
     private readonly configService: ConfigService,
     @Inject(coffeesConfig.KEY)
-    private readonly coffeesConfiguration: ConfigType<typeof coffeesConfig>,
+    private readonly coffeesConfiguration: Coffees,
+    
   ) {
     console.log('CoffeesService instantiated');
 
