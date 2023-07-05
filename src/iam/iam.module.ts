@@ -24,7 +24,7 @@ import { AccessTokenGuard } from './authentication/guards/access-token.guard';
     },
     {
       provide:APP_GUARD,
-      useClass:AccessTokenGuard
+      useClass:AccessTokenGuard,
     }, 
     AuthenticationService],
   controllers: [AuthenticationController]
