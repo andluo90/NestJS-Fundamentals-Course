@@ -59,6 +59,7 @@ export class AuthenticationService {
             throw new UnauthorizedException('密码不正确.')
         }
 
+
         const accessToken = await this.jwtService.signAsync(
             {
                 sub:user.id,
@@ -68,8 +69,7 @@ export class AuthenticationService {
                 audience:this.jwtConfiguration.audience,
                 issuer:this.jwtConfiguration.issuer,
                 secret:this.jwtConfiguration.secret,
-                expiresIn:this.jwtConfiguration.accessTokenTtl
-
+                expiresIn: parseInt(this.jwtConfiguration.accessTokenTtl)
             }
         )
 
