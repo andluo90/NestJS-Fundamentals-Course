@@ -118,7 +118,7 @@ export class CoffeesService {
       const recommendEvent = new Event();
       recommendEvent.name = 'recommend_coffee';
       recommendEvent.type = 'coffee';
-      recommendEvent.payload = { coffeeId: coffee.id };
+      recommendEvent.payload = JSON.stringify({ coffeeId: coffee.id });
 
       // 使用 query runner 实体管理器来保存 Coffee 和 Event 实体
       await queryRunner.manager.save(coffee);

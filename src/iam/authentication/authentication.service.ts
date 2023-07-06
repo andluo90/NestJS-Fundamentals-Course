@@ -72,7 +72,8 @@ export class AuthenticationService {
                 expiresIn: parseInt(this.jwtConfiguration.accessTokenTtl)
             }
         )
-
+        console.log(`accessToken`,accessToken);
+        
         return {
             accessToken
         }

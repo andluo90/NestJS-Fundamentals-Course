@@ -13,6 +13,11 @@ export class Event {
   @Column()
   name: string;
 
-  @Column('json')
-  payload: Record<string, any>; // Record 采用 Record<K, T> 的形式，其中 K 是键的类型，T 是值的类型。https://fjolt.com/article/typescript-record-type
+  // @Column('json')
+  // payload: Record<string, any>; // Record 采用 Record<K, T> 的形式，其中 K 是键的类型，T 是值的类型。https://fjolt.com/article/typescript-record-type
+  
+  @Column()
+  payload:string;
+
+
 }
