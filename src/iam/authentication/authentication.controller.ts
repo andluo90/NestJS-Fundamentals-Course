@@ -1,5 +1,6 @@
 import { Body, Controller,HttpCode,HttpStatus,Post, Res, SetMetadata } from '@nestjs/common';
 import { Response } from 'express';
+import { IsPublic } from 'src/common/decorators/is-public.decorator';
 import { AuthenticationService } from './authentication.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { SignUpDto } from './dto/sign-up.dto';
@@ -10,14 +11,14 @@ export class AuthenticationController {
         private readonly authService:AuthenticationService
     ){}
     
-    @SetMetadata('isPublic',true)
+    @IsPublic(true)
     @Post('sign-up')
     signUp(@Body() signUpDto:SignUpDto){
         return this.authService.signUp(signUpDto)
     }
 
     @HttpCode(HttpStatus.OK)
-    @SetMetadata('isPublic',true)
+    @IsPublic(true)
     @Post('sign-in')
     async signIn(
         @Res({passthrough:true}) response:Response,
