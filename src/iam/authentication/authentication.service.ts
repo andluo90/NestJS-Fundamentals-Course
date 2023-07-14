@@ -2,6 +2,7 @@ import { ConflictException, Inject, Injectable, UnauthorizedException } from '@n
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CustomException } from 'src/exceptions/custom-exceptions';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import jwtConfig from '../config/jwt.config';
@@ -40,7 +41,8 @@ export class AuthenticationService {
 
             const pgUniqueViolationErrorCode = 'SQLITE_CONSTRAINT'
             if(error.code === pgUniqueViolationErrorCode){
-                throw new ConflictException();
+                // throw new ConflictException('该邮箱已被注册,请更换邮箱.');
+                throw new CustomException('该邮箱已被注册,请更换邮箱.')
             }
             throw error
         }
