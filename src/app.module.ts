@@ -34,7 +34,7 @@ import appConfig from './config/app.config';
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: '../test.db', // 指定 SQLite 数据库文件路径
+      database: './test.db', // 指定 SQLite 数据库文件路径
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
