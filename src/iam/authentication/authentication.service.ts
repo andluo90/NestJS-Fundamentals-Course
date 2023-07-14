@@ -30,7 +30,15 @@ export class AuthenticationService {
             user.password = await this.hashingService.hash(signUpDto.password)
             await this.usersRepository.save(user)            
         } catch (error) {
-            const pgUniqueViolationErrorCode = '23505'
+            console.error(`signUp error`,error);
+            
+            // const pgUniqueViolationErrorCode = '23505'
+            // if(error.code === pgUniqueViolationErrorCode){
+            //     throw new ConflictException();
+            // }
+            // throw error
+
+            const pgUniqueViolationErrorCode = 'SQLITE_CONSTRAINT'
             if(error.code === pgUniqueViolationErrorCode){
                 throw new ConflictException();
             }

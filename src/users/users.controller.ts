@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { IsPublic } from 'src/common/decorators/is-public.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -12,9 +14,10 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @IsPublic(true)
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(@Query() paginationQuery:PaginationQueryDto) {
+    return this.usersService.findAll(paginationQuery);
   }
 
   @Get(':id')
