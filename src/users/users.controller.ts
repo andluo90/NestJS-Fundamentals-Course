@@ -14,7 +14,7 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @IsPublic(true)
+  // @IsPublic(true)
   @Get()
   findAll(@Query() paginationQuery:PaginationQueryDto) {
     return this.usersService.findAll(paginationQuery);
