@@ -28,9 +28,11 @@ export class AccessTokenGuard implements CanActivate {
     
 
     const request = context.switchToHttp().getRequest()
-    const token = this.extractTokenFromHeader(request)
+    // const token = this.extractTokenFromHeader(request)
+    const token = this.extractTokenFromRequest(request)
+
     if(!token){
-      console.log(`111`);
+      console.log(`没有token.`);
       
       throw new UnauthorizedException();
     }
@@ -52,8 +54,32 @@ export class AccessTokenGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request:Request):string|undefined{
+    console.log(`Request`,request);
+    
     const [_,token] = request.headers.authorization?.split(' ') ?? []
     return token
   }
+
+  private extractTokenFromRequest(request:Request):string|undefined{
+    const cookiesStr = request.headers.cookie
+    if(!cookiesStr){
+      return ''
+    }
+    const cookiesArray = cookiesStr.split('; ');
+
+
+    let accessTokenValue: string | undefined;
+
+    // 遍历数组，找到名为 'accessToken' 的键值对，提取出其值
+    cookiesArray.forEach((cookie) => {
+      const [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName.trim() === 'accessToken') {
+        accessTokenValue = cookieValue;
+      }
+    });
+    console.log(`extractTokenFromRequest`,accessTokenValue);
+    
+    return accessTokenValue;
+  }  
 
 }
