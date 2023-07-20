@@ -26,7 +26,7 @@ export class AuthenticationController {
     ){
         console.log(`signInDto`,signInDto);
         
-        const accessToken = await this.authService.signIn(signInDto)
+        const {accessToken} = await this.authService.signIn(signInDto)
         
         response.cookie('accessToken',accessToken,{
             secure:true,
