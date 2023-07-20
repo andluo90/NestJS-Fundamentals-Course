@@ -31,7 +31,8 @@ export class CoffeesController {
     // console.log(typeof id);
     return this.coffeesService.findOne(id);
   }
-
+  
+  @IsPublic(true)
   @Post()
   create(@Body() createCoffeeDto: CreateCoffeeDto) {
     // console.log(createCoffeeDto instanceof CreateCoffeeDto);
