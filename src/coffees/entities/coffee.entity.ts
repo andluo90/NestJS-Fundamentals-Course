@@ -37,5 +37,5 @@ export class Coffee {
   flavors: Flavor[];
 
   @ManyToOne(()=>User,(user)=>user.coffees)
-  user:User[]
+  user:User
 }

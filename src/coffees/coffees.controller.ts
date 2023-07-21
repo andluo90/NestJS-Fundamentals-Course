@@ -7,9 +7,12 @@ import {
   Patch,
   Post,
   Query,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { IsPublic } from 'src/common/decorators/is-public.decorator';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { REQUEST_USER_KEY } from 'src/iam/iam.constants';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
@@ -18,11 +21,12 @@ import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
 
-  @IsPublic(true)
+  // @IsPublic(true)
   @Get()
-  findAll(@Query() paginationQuery: PaginationQueryDto) {
+  findAll(@Req() request:Request,@Query() paginationQuery: PaginationQueryDto) {
     // const { limit, offset } = paginationQuery;
-    return this.coffeesService.findAll(paginationQuery);
+    console.log('findAll',request[REQUEST_USER_KEY]);
+    return this.coffeesService.findAll(request[REQUEST_USER_KEY],paginationQuery);
   }
 
   @IsPublic(true)
@@ -31,17 +35,17 @@ export class CoffeesController {
     // console.log(typeof id);
     return this.coffeesService.findOne(id);
   }
-  
-  @IsPublic(true)
+
+  // @IsPublic(true)
   @Post()
-  create(@Body() createCoffeeDto: CreateCoffeeDto) {
+  create(@Req() request:Request , @Body() createCoffeeDto: CreateCoffeeDto) {
     // console.log(createCoffeeDto instanceof CreateCoffeeDto);
-    return this.coffeesService.create(createCoffeeDto);
+    return this.coffeesService.create(request[REQUEST_USER_KEY],createCoffeeDto,);
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateCoffeeDto: UpdateCoffeeDto) {
-    return this.coffeesService.update(id, updateCoffeeDto);
+  update(@Req() request:Request ,@Param('id') id: number, @Body() updateCoffeeDto: UpdateCoffeeDto) {
+    return this.coffeesService.update(request[REQUEST_USER_KEY],id, updateCoffeeDto);
   }
 
   @Delete(':id')

@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException, Req, Scope } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { Connection, Repository } from 'typeorm';
@@ -10,6 +10,7 @@ import { Event } from 'src/events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
 import { ConfigService, ConfigType } from '@nestjs/config';
 import coffeesConfig,{Coffees} from './config/coffees.config';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable() // == @Injectable({ scope: Scope.DEFAULT })
 export class CoffeesService {
@@ -18,6 +19,10 @@ export class CoffeesService {
     private readonly coffeeRepository: Repository<Coffee>,
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
+
+    @InjectRepository(User)
+    private readonly UserRepository: Repository<User>,
+
     private readonly connection: Connection,
     @Inject(COFFEE_BRANDS) coffeeBrands: string[],
     private readonly configService: ConfigService,
@@ -38,13 +43,23 @@ export class CoffeesService {
     );
   }
 
-  findAll(paginationQuery: PaginationQueryDto) {
-    const { limit, offset } = paginationQuery;
-    return this.coffeeRepository.find({
-      relations: ['flavors','user'],
-      skip: offset,
-      take: limit,
-    });
+  async findAll(userParam:User,paginationQuery: PaginationQueryDto) {
+    // const user = await this.preloadUserByUserId(userParam.id)
+    // const { limit, offset } = paginationQuery;
+    // return this.coffeeRepository.find({
+    //   where:{},
+    //   relations: ['flavors','user'],
+    //   skip: offset,
+    //   take: limit,
+    // });
+
+    const users = await this.UserRepository.findOne({
+      where:{id:userParam.id},
+      relations:['coffees','coffees.flavors','coffees.user']
+    })
+
+    return users.coffees
+
   }
 
   async findOne(id: number) {
@@ -59,7 +74,11 @@ export class CoffeesService {
     return coffee;
   }
 
-  async create(createCoffeeDto: CreateCoffeeDto) {
+  async create(userParam:User , createCoffeeDto: CreateCoffeeDto) {
+    console.log(`create:`,userParam);
+    
+    const user = await this.preloadUserByUserId(userParam.id)
+
     // 确保在创建 Coffee 之前，所有的 Flavor 都已存在数据库中，并配合 Promise.all 等待所有的 Flavor 都创建完毕
     const flavors = await Promise.all(
       createCoffeeDto.flavors.map((name) => this.preloadFlavorByName(name)),
@@ -68,12 +87,16 @@ export class CoffeesService {
     const coffee = this.coffeeRepository.create({
       ...createCoffeeDto,
       flavors,
+      user
     });
     return this.coffeeRepository.save(coffee);
   }
 
-  async update(id: number, updateCoffeeDto: UpdateCoffeeDto) {
+  async update(userParam:User,id: number, updateCoffeeDto: UpdateCoffeeDto) {
     // 确保在修改 Coffee 之前，所有的 Flavor 都已存在数据库中，并配合 Promise.all 等待所有的 Flavor 都创建完毕
+    const user = await this.preloadUserByUserId(userParam.id)
+    
+    
     const flavors = await Promise.all(
       updateCoffeeDto.flavors.map((name) => this.preloadFlavorByName(name)),
     );
@@ -89,6 +112,7 @@ export class CoffeesService {
       id,
       ...updateCoffeeDto,
       flavors,
+      user,
     });
     if (!coffee) {
       throw new NotFoundException(`Coffee #${id} not found`);
@@ -141,5 +165,14 @@ export class CoffeesService {
     }
 
     return this.flavorRepository.create({ name });
+  }
+
+  private async preloadUserByUserId(id:number): Promise<User> {
+    const existingUser = await this.UserRepository.findOneBy({id})
+    if(existingUser){
+      console.log(`id:${id} 用户存在`);
+      return existingUser
+    }
+    
   }
 }

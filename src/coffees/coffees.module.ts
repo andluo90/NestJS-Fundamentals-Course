@@ -2,6 +2,7 @@ import { Module, Scope } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Event } from 'src/events/entities/event.entity';
+import { User } from 'src/users/entities/user.entity';
 import { Connection } from 'typeorm';
 import { COFFEE_BRANDS } from './coffees.constants';
 import { CoffeesController } from './coffees.controller';
@@ -12,7 +13,7 @@ import { Flavor } from './entities/flavor.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Coffee, Flavor, Event]),
+    TypeOrmModule.forFeature([Coffee, Flavor, Event,User]),
     ConfigModule.forFeature(coffeesConfig),
   ],
   controllers: [CoffeesController],

@@ -20,7 +20,7 @@ export class UsersController {
   // @IsPublic(true)
   @Get()
   findAll(@Req() request: Request , @Query() paginationQuery:PaginationQueryDto) {
-    console.log(`current user id:`,request[REQUEST_USER_KEY].sub);
+    // console.log(`current user id:`,request[REQUEST_USER_KEY].sub);
     
     return this.usersService.findAll(paginationQuery);
   }
