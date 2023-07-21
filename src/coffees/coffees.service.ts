@@ -43,8 +43,8 @@ export class CoffeesService {
     );
   }
 
-  async findAll(userParam:User,paginationQuery: PaginationQueryDto) {
-    // const user = await this.preloadUserByUserId(userParam.id)
+  async findAll(userId:number,paginationQuery: PaginationQueryDto) {
+    // const user = await this.preloadUserByUserId(userId)
     // const { limit, offset } = paginationQuery;
     // return this.coffeeRepository.find({
     //   where:{},
@@ -52,13 +52,19 @@ export class CoffeesService {
     //   skip: offset,
     //   take: limit,
     // });
-
+    console.log(`userId:`,userId);
+    
     const users = await this.UserRepository.findOne({
-      where:{id:userParam.id},
+      where:{id:userId},
       relations:['coffees','coffees.flavors','coffees.user']
     })
 
-    return users.coffees
+    if(users){
+      return users.coffees
+    }else{
+      return []
+    }
+
 
   }
 
@@ -74,10 +80,9 @@ export class CoffeesService {
     return coffee;
   }
 
-  async create(userParam:User , createCoffeeDto: CreateCoffeeDto) {
-    console.log(`create:`,userParam);
+  async create(userId:number , createCoffeeDto: CreateCoffeeDto) {
     
-    const user = await this.preloadUserByUserId(userParam.id)
+    const user = await this.preloadUserByUserId(userId)
 
     // 确保在创建 Coffee 之前，所有的 Flavor 都已存在数据库中，并配合 Promise.all 等待所有的 Flavor 都创建完毕
     const flavors = await Promise.all(
@@ -92,9 +97,9 @@ export class CoffeesService {
     return this.coffeeRepository.save(coffee);
   }
 
-  async update(userParam:User,id: number, updateCoffeeDto: UpdateCoffeeDto) {
+  async update(userId:number,id: number, updateCoffeeDto: UpdateCoffeeDto) {
     // 确保在修改 Coffee 之前，所有的 Flavor 都已存在数据库中，并配合 Promise.all 等待所有的 Flavor 都创建完毕
-    const user = await this.preloadUserByUserId(userParam.id)
+    const user = await this.preloadUserByUserId(userId)
     
     
     const flavors = await Promise.all(

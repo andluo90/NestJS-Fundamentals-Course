@@ -25,8 +25,7 @@ export class CoffeesController {
   @Get()
   findAll(@Req() request:Request,@Query() paginationQuery: PaginationQueryDto) {
     // const { limit, offset } = paginationQuery;
-    console.log('findAll',request[REQUEST_USER_KEY]);
-    return this.coffeesService.findAll(request[REQUEST_USER_KEY],paginationQuery);
+    return this.coffeesService.findAll(request[REQUEST_USER_KEY].sub,paginationQuery);
   }
 
   @IsPublic(true)
@@ -40,12 +39,12 @@ export class CoffeesController {
   @Post()
   create(@Req() request:Request , @Body() createCoffeeDto: CreateCoffeeDto) {
     // console.log(createCoffeeDto instanceof CreateCoffeeDto);
-    return this.coffeesService.create(request[REQUEST_USER_KEY],createCoffeeDto,);
+    return this.coffeesService.create(request[REQUEST_USER_KEY].sub,createCoffeeDto,);
   }
 
   @Patch(':id')
   update(@Req() request:Request ,@Param('id') id: number, @Body() updateCoffeeDto: UpdateCoffeeDto) {
-    return this.coffeesService.update(request[REQUEST_USER_KEY],id, updateCoffeeDto);
+    return this.coffeesService.update(request[REQUEST_USER_KEY].sub,id, updateCoffeeDto);
   }
 
   @Delete(':id')
