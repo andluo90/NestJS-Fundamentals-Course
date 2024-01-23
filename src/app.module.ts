@@ -13,14 +13,6 @@ import appConfig from './config/app.config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
-const rootPath =  join(__dirname, '..', 'musicFiles')
-
-console.log('rootPath:',rootPath)
-
-
-
-
-
 
 @Module({
   imports: [
