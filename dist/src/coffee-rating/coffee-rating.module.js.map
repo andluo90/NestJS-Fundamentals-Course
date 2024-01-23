@@ -1,1 +1,0 @@
-{"version":3,"file":"coffee-rating.module.js","sourceRoot":"","sources":["../../../src/coffee-rating/coffee-rating.module.ts"],"names":[],"mappings":";;;;;;;;;AAAA,2CAAwC;AACxC,8DAA2D;AAE3D,mEAA8D;AAe9D,IAAa,kBAAkB,GAA/B,MAAa,kBAAkB;CAAG,CAAA;AAArB,kBAAkB;IAb9B,IAAA,eAAM,EAAC;QACN,OAAO,EAAE;YACP,8BAAa;SAQd;QACD,SAAS,EAAE,CAAC,2CAAmB,CAAC;KACjC,CAAC;GACW,kBAAkB,CAAG;AAArB,gDAAkB"}

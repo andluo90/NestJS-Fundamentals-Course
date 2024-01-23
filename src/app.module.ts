@@ -14,6 +14,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
 
+
 @Module({
   imports: [
     // TypeOrmModule.forRootAsync({
@@ -54,4 +55,10 @@ import { join } from 'path';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(){
+    console.log('AppModule env:',process.env.NODE_ENV);
+
+    
+  }
+}
