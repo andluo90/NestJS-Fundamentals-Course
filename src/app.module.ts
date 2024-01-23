@@ -10,6 +10,17 @@ import { ConfigModule } from '@nestjs/config';
 import { IamModule } from './iam/iam.module';
 import { UsersModule } from './users/users.module';
 import appConfig from './config/app.config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
+const rootPath =  join(__dirname, '..', 'musicFiles')
+
+console.log('rootPath:',rootPath)
+
+
+
+
+
 
 @Module({
   imports: [
@@ -25,6 +36,10 @@ import appConfig from './config/app.config';
     //     synchronize: true,
     //   }),
     // }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'musicFiles'),
+      serveRoot: '/public'
+    }),    
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         DATABASE_HOST: Joi.required(),
