@@ -12,6 +12,7 @@ import { UsersModule } from './users/users.module';
 import appConfig from './config/app.config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { FileModule } from './file/file.module';
 
 
 
@@ -51,6 +52,7 @@ import { join } from 'path';
     DatabaseModule,
     IamModule,
     UsersModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -9,7 +9,23 @@ export interface Response<T> {
 
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> {
+
+  constructor(private readonly excludedRoutes:string[] = []){}
+
   intercept(context: ExecutionContext, next: CallHandler): Observable<Response<T>> {
+
+    const request = context.switchToHttp().getRequest()
+    const isExcluded = this.excludedRoutes.some(route => {
+      console.log(`request.url`,request.url);
+      
+      return request.url.startsWith(route)
+    });
+
+    if(isExcluded){
+      return next.handle()
+    }
+
+    
     return next.handle().pipe(map(data => {
         return {
             resultCode:200,
