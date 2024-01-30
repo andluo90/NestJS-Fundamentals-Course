@@ -10,8 +10,6 @@ import { ConfigModule } from '@nestjs/config';
 import { IamModule } from './iam/iam.module';
 import { UsersModule } from './users/users.module';
 import appConfig from './config/app.config';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 import { FileModule } from './file/file.module';
 
 
@@ -30,10 +28,6 @@ import { FileModule } from './file/file.module';
     //     synchronize: true,
     //   }),
     // }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'musicFiles'),
-      serveRoot: '/public'
-    }),    
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         DATABASE_HOST: Joi.required(),
