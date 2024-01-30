@@ -53,7 +53,8 @@ export class FileController {
   @Get(':name')
   getMusicByName(@Param('name') name:string,@Res({ passthrough: true }) res: Response): StreamableFile {
     
-    const filePath = join(process.cwd(), `musicFiles/${name}.mp3`);
+    const filePath = `${this.fileConfiguration.musciDirectory}/${name}`
+
     // 检查文件是否存在
       const {fileStream,stats} = this.fileService.getFileStream(filePath)
       res.set({
