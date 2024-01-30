@@ -1,18 +1,25 @@
-import { Controller, Get, Param, Query, Res, StreamableFile } from '@nestjs/common';
+import { Controller, Get, Inject, Param, Query, Res, StreamableFile } from '@nestjs/common';
 import { createReadStream, statSync } from 'fs';
 import { join } from 'path';
 import type { Response } from 'express';
 import { IsPublic } from 'src/common/decorators/is-public.decorator';
 import { FileService } from './file.service';
+import fileConfig from 'src/iam/config/file.config';
+import { ConfigType } from '@nestjs/config';
 
 @Controller('file')
 export class FileController {
 
-  constructor(private readonly fileService:FileService){}
+  constructor(
+        private readonly fileService:FileService,
+        @Inject(fileConfig.KEY)
+        private readonly fileConfiguration:ConfigType<typeof fileConfig>
+    ){}
 
   @IsPublic(true)
   @Get()
   getFile(@Res({ passthrough: true }) res: Response): StreamableFile {
+    
     const filePath = join(process.cwd(), 'musicFiles/testMusic2.mp3');
 
     // 检查文件是否存在
@@ -39,6 +46,8 @@ export class FileController {
   @IsPublic(true)
   @Get('musicList')
   getListOfFiles(): string[] {
+    console.log(`fileConfiguration:`,this.fileConfiguration.musciDirectory);
+    
     const directoryPath = join(process.cwd(), 'musicFiles');
     return this.fileService.getFilesInDirectory(directoryPath);
   }   
@@ -46,7 +55,7 @@ export class FileController {
   @IsPublic(true)
   @Get(':name')
   getMusicByName(@Param('name') name:string,@Res({ passthrough: true }) res: Response): StreamableFile {
-
+    
     const filePath = join(process.cwd(), `musicFiles/${name}.mp3`);
     // 检查文件是否存在
       const {fileStream,stats} = this.fileService.getFileStream(filePath)
