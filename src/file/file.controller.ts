@@ -46,10 +46,7 @@ export class FileController {
   @IsPublic(true)
   @Get('musicList')
   getListOfFiles(): string[] {
-    console.log(`fileConfiguration:`,this.fileConfiguration.musciDirectory);
-    
-    const directoryPath = join(process.cwd(), 'musicFiles');
-    return this.fileService.getFilesInDirectory(directoryPath);
+    return this.fileService.getFilesInDirectory(this.fileConfiguration.musciDirectory);
   }   
 
   @IsPublic(true)
