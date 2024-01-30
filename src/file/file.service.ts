@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { createReadStream, statSync } from 'fs';
+import { createReadStream, readdirSync, statSync } from 'fs';
 
 @Injectable()
 export class FileService {
@@ -11,6 +11,14 @@ export class FileService {
             return { stats, fileStream };
         } catch (error) {
             throw new NotFoundException(`File not found: ${filePath}`);
+        }
+    }
+
+    getFilesInDirectory(directoryPath: string): string[] {
+        try {
+          return readdirSync(directoryPath);
+        } catch (error) {
+          throw new NotFoundException(`Directory not found: ${directoryPath}`);
         }
     }
 }

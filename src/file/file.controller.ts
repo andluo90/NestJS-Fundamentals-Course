@@ -35,6 +35,14 @@ export class FileController {
     }
   }
 
+
+  @IsPublic(true)
+  @Get('musicList')
+  getListOfFiles(): string[] {
+    const directoryPath = join(process.cwd(), 'musicFiles');
+    return this.fileService.getFilesInDirectory(directoryPath);
+  }   
+
   @IsPublic(true)
   @Get(':name')
   getMusicByName(@Param('name') name:string,@Res({ passthrough: true }) res: Response): StreamableFile {
@@ -50,5 +58,7 @@ export class FileController {
 
       return new StreamableFile(fileStream);
   }
+
+
 
 }
