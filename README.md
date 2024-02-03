@@ -16,3 +16,16 @@
    ```shell
    yarn start:dev
    ```
+
+
+#### 生成模块
+
+nest g mo `<name>`
+
+#### 生成控制器
+
+nest g co `<name>`
+
+#### 生成服务
+
+nest g s `<name>`

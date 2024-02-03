@@ -11,6 +11,7 @@ import { IamModule } from './iam/iam.module';
 import { UsersModule } from './users/users.module';
 import appConfig from './config/app.config';
 import { FileModule } from './file/file.module';
+import { AudioModule } from './audio/audio.module';
 
 
 
@@ -47,6 +48,7 @@ import { FileModule } from './file/file.module';
     IamModule,
     UsersModule,
     FileModule,
+    AudioModule,
   ],
   controllers: [AppController],
   providers: [AppService],
