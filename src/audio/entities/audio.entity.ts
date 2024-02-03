@@ -10,19 +10,19 @@ import {
     @PrimaryGeneratedColumn()
     aid: number;
 
-    @Column({unique:true,nullable:true})
+    @Column({unique:true})
     id: number;    
     
-    @Column({ nullable: true })
+    @Column({ unique:true })
     songid: number;
   
-    @Column({ nullable: true })
+    @Column()
     title: string;
 
-    @Column()
+    @Column({ nullable: true })
     author: string;
     
-    @Column({ nullable: true })
+    @Column()
     link: string;    
 
     @Column()
@@ -39,6 +39,12 @@ import {
 
     @Column()
     url_320: string;    
+
+    @Column({default:false})
+    isDownloaded: boolean;
+
+    @Column({default:false})
+    isDeleted: boolean;
 
   }
   
