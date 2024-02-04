@@ -17,7 +17,7 @@ async function bootstrap() {
       },
     }),
   );
-  app.useGlobalInterceptors(new LoggingInterceptor(), new TransformInterceptor(['/file']));
+  app.useGlobalInterceptors(new LoggingInterceptor(), new TransformInterceptor(['/file','/audio/static']));
   app.useGlobalFilters(new HttpExceptionFilter())
 
   await app.listen(3000);
