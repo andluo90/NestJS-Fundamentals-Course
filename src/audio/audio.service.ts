@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CustomException } from 'src/exceptions/custom-exceptions';
+import { createReadStream, statSync } from 'fs';
 
 import { Repository } from 'typeorm';
 import { CreateAudioDto } from './dto/create-audio.dto';
@@ -42,6 +43,16 @@ export class AudioService {
 
     async findAll(){
         return await this.audioRepository.find({select:{id:true,title:true}})
+    }
+
+    getAudio(filePath:string){
+        try {
+            const stats = statSync(filePath);
+            const fileStream = createReadStream(filePath);
+            return { stats, fileStream };
+        } catch (error) {
+            throw new NotFoundException(`File not found: ${filePath}`);
+        }       
     }
     
     private async preloadAudioById(songid:number): Promise<Audio> {
