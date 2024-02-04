@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Req } from '@nestjs/common';
 import { AudioService } from './audio.service';
 import { CreateAudioDto } from './dto/create-audio.dto';
 import { UpdateAudioDto } from './dto/update-audio.dto';
@@ -17,7 +17,14 @@ export class AudioController {
     @Post('update')
     update(@Body() updateAudioDto: UpdateAudioDto) {
       return this.audioService.update(updateAudioDto);
-    }    
+    }
+
+    @Get('getall')
+    findAll(){
+      return this.audioService.findAll()
+    }
+    
+    
 
 
 }

@@ -39,6 +39,10 @@ export class AudioService {
         const res = await this.audioRepository.save(audio);
         return true
     }  
+
+    async findAll(){
+        return await this.audioRepository.find({select:{id:true,title:true}})
+    }
     
     private async preloadAudioById(songid:number): Promise<Audio> {
         const existingAudio = await this.audioRepository.findOneBy({songid})
