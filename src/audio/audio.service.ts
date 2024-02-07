@@ -42,7 +42,7 @@ export class AudioService {
     }  
 
     async findAll(){
-        return await this.audioRepository.find({select:{id:true,title:true}})
+        return await this.audioRepository.find({select:{id:true,title:true,author:true}})
     }
 
     getAudio(filePath:string){
