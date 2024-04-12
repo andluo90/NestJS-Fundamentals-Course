@@ -8,7 +8,7 @@ export class GoldPriceController {
 
 
     @IsPublic(true)
-    @Get('today')
+    @Get('today-price')
     todayPrice() {
       // console.log(typeof id);
       return this.goldPriceService.getTodayPrice();
