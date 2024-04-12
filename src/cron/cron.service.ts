@@ -1,18 +1,24 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression,SchedulerRegistry } from '@nestjs/schedule';
+import { InjectRepository } from '@nestjs/typeorm';
+import { GoldPrice } from 'src/gold-price/entities/gold-price.entity';
+import { Repository } from 'typeorm';
 
 
 
 @Injectable()
 export class CronService {
-    constructor(private readonly httpService: HttpService) {}
+    
+    constructor(
+      @InjectRepository(GoldPrice)
+      private readonly goldPriceRepository: Repository<GoldPrice>,
+      private readonly httpService: HttpService
+    ) {}
 
-    @Cron(CronExpression.EVERY_30_SECONDS,{name:'fetchGoldPrice'})
+    @Cron(CronExpression.EVERY_DAY_AT_10PM,{name:'fetchGoldPrice'})
     async handleCron() {
         
-      console.log(`Called every 30 seconds`);
-
       try {
         const response = await this.httpService.get("https://www.5huangjin.com/data/jin.js", {
           headers: {
@@ -33,23 +39,29 @@ export class CronService {
         }).toPromise();
     
         const text:any = response.data;
-        console.log(text);
         
         const lines = text.split('\n');
     
         // Process lines as before
         lines.forEach(line => {
           if (line.startsWith('var hq_str_gds_AUTD')) {
-            console.log(line);
-    
-            let prices = line.split('=')[1].replace('"','').split(',');
-            prices.forEach(price => {
-              console.log(price);
-            });
+            console.log("找到了...");
+            let prices:string[] = line.split('=')[1].replace('"','').split(',');
+            let goldPrice = new GoldPrice()
+            goldPrice.current = prices[0],
+            goldPrice.todayHigh = prices[4],
+            goldPrice.todayLow = prices[5],
+            goldPrice.yestodayEnd = prices[7],
+            goldPrice.todayStart = prices[8],
+            goldPrice.date = prices[12],
+            console.log(`save price success.`);
+            this.goldPriceRepository.save(goldPrice)
+
           }
         });
       } catch (error) {
         console.error('Error fetching data:', error);
+        console.log(`save price error.`);
       }
 
     }

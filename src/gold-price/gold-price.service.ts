@@ -1,17 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { GoldPrice } from './entities/gold-price.entity';
 
 @Injectable()
 export class GoldPriceService {
     constructor(
+        @InjectRepository(GoldPrice)
+        private readonly goldPriceRepository: Repository<GoldPrice>,
+        
         private schedulerRegistry: SchedulerRegistry,
     ) {}
 
 
     async getTodayPrice(){
 
-        return 'getTodayPrice ... '
-          
+        const goldPrice = await this.goldPriceRepository.find();
+        if (!goldPrice) {
+            throw new NotFoundException(`goldPrice not found`);
+        }
+
+        return goldPrice;
 
     }
 
