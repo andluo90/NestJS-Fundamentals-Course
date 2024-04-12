@@ -3,14 +3,16 @@ import { SchedulerRegistry } from '@nestjs/schedule';
 
 @Injectable()
 export class GoldPriceService {
-    constructor(private schedulerRegistry: SchedulerRegistry) {}
+    constructor(
+        private schedulerRegistry: SchedulerRegistry,
+    ) {}
 
 
     async getTodayPrice(){
-        let cronJob = this.schedulerRegistry.getCronJob('fetchGoldPrice')
-        console.log(`cronJob:`,cronJob.running,cronJob.lastDate());
-        
-        return '222'
+
+        return 'getTodayPrice ... '
+          
+
     }
 
     /**
@@ -19,10 +21,18 @@ export class GoldPriceService {
      */
     async startService(){
         let cronJob = this.schedulerRegistry.getCronJob('fetchGoldPrice')
-        if(cronJob && !cronJob.running){
-            cronJob.start()
-            return 'started'
+
+        if(cronJob){
+            if(cronJob.running){
+                return '已启动'
+            }else{
+                cronJob.start()
+                return '启动成功'
+            }
+        }else{
+            return '找不到服务'
         }
+
     }
 
     /**
@@ -31,9 +41,15 @@ export class GoldPriceService {
      */
     async stopService(){
         let cronJob = this.schedulerRegistry.getCronJob('fetchGoldPrice')
-        if(cronJob && cronJob.running){
-            cronJob.stop()
-            return 'stoped'
+        if(cronJob){
+            if(cronJob.running){
+                cronJob.stop()
+                return '停止成功'
+            }else{
+                return '已停止'
+            }
+        }else{
+            return '找不到服务'
         }
     }
 

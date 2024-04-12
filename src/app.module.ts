@@ -14,7 +14,7 @@ import { FileModule } from './file/file.module';
 import { AudioModule } from './audio/audio.module';
 import { GoldPriceModule } from './gold-price/gold-price.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { CronService } from './cron/cron.service';
+import { CronModule } from './cron/cron.module';
 
 
 
@@ -53,10 +53,11 @@ import { CronService } from './cron/cron.service';
     FileModule,
     AudioModule,
     GoldPriceModule,
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
+    CronModule
   ],
   controllers: [AppController],
-  providers: [AppService, CronService],
+  providers: [AppService],
 })
 export class AppModule {
   constructor(){

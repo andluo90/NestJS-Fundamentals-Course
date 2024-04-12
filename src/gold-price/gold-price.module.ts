@@ -3,6 +3,7 @@ import { GoldPriceController } from './gold-price.controller';
 import { GoldPriceService } from './gold-price.service';
 
 @Module({
+  imports:[],
   controllers: [GoldPriceController],
   providers: [GoldPriceService]
 })
