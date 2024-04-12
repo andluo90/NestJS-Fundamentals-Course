@@ -16,7 +16,7 @@ export class GoldPriceService {
 
     async getTodayPrice(){
 
-        const goldPrice = await this.goldPriceRepository.find();
+        const goldPrice = await this.goldPriceRepository.createQueryBuilder('entity').orderBy('entity.id', 'DESC').getOne()
         if (!goldPrice) {
             throw new NotFoundException(`goldPrice not found`);
         }
