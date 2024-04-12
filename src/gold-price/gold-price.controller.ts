@@ -1,6 +1,7 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Res } from '@nestjs/common';
 import { IsPublic } from 'src/common/decorators/is-public.decorator';
 import { GoldPriceService } from './gold-price.service';
+import type { Response } from 'express';
 
 @Controller('gold-price')
 export class GoldPriceController {
@@ -9,16 +10,41 @@ export class GoldPriceController {
 
     @IsPublic(true)
     @Get('today-price')
-    todayPrice() {
-      // console.log(typeof id);
-      return this.goldPriceService.getTodayPrice();
+    async todayPrice(@Res({ passthrough: true }) res: Response) {
+      const price = await this.goldPriceService.getTodayPrice();
+      res.setHeader('Content-Type', 'text/html')
+      res.send(
+        `<html>
+          <body>
+            <h3>当前价格: ${price.current}</h2>
+            <h3>今日最高: ${price.todayHigh}</h2>
+            <h3>今日最低: ${price.todayLow}</h2>
+            <h3>今日开盘: ${price.todayStart}</h2>
+            <h3>昨天收盘: ${price.yestodayEnd}</h2>
+            <h3>日期: ${price.date}</h2>
+          </body>
+        </html>`
+      );
     }
 
     @IsPublic(true)
     @Get('lastest-price')
-    lastestPrice() {
-      // console.log(typeof id);
-      return this.goldPriceService.getLastestPrice();
+    async lastestPrice(@Res({ passthrough: true }) res: Response) {
+      const price = await this.goldPriceService.getLastestPrice();
+      res.setHeader('Content-Type', 'text/html')
+      res.send(
+        `<html>
+          <body>
+            <h3>最新价格: ${price.current}</h2>
+            <h3>今日最高: ${price.todayHigh}</h2>
+            <h3>今日最低: ${price.todayLow}</h2>
+            <h3>今日开盘: ${price.todayStart}</h2>
+            <h3>昨天收盘: ${price.yestodayEnd}</h2>
+            <h3>日期: ${price.date}</h2>
+          </body>
+        </html>`
+      );
+
     }    
     
 
