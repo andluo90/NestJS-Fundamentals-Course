@@ -6,9 +6,9 @@ import { Cron, CronExpression,SchedulerRegistry } from '@nestjs/schedule';
 @Injectable()
 export class CronService {
 
-    @Cron(CronExpression.EVERY_30_SECONDS,{name:'fetchGoldPrice'})
+    @Cron(CronExpression.EVERY_5_SECONDS,{name:'fetchGoldPrice'})
     handleCron() {
-      console.log(`Called every 30 seconds`);
+      console.log(`Called every 5 seconds`);
     }
 
 }

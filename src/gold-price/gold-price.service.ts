@@ -13,4 +13,28 @@ export class GoldPriceService {
         return '222'
     }
 
+    /**
+     * 启动服务
+     * @returns 
+     */
+    async startService(){
+        let cronJob = this.schedulerRegistry.getCronJob('fetchGoldPrice')
+        if(cronJob && !cronJob.running){
+            cronJob.start()
+            return 'started'
+        }
+    }
+
+    /**
+     * 停止服务
+     * @returns 
+     */
+    async stopService(){
+        let cronJob = this.schedulerRegistry.getCronJob('fetchGoldPrice')
+        if(cronJob && cronJob.running){
+            cronJob.stop()
+            return 'stoped'
+        }
+    }
+
 }
