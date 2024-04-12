@@ -8,7 +8,8 @@ import { GoldPrice } from 'src/gold-price/entities/gold-price.entity';
   imports:[
     TypeOrmModule.forFeature([GoldPrice]),
     HttpModule],
-  providers: [CronService]
+  providers: [CronService],
+  exports:[CronService]
 
 })
 export class CronModule {}

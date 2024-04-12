@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CronService } from 'src/cron/cron.service';
 import { Repository } from 'typeorm';
 import { GoldPrice } from './entities/gold-price.entity';
 
@@ -9,7 +10,7 @@ export class GoldPriceService {
     constructor(
         @InjectRepository(GoldPrice)
         private readonly goldPriceRepository: Repository<GoldPrice>,
-        
+        private readonly cronService: CronService,
         private schedulerRegistry: SchedulerRegistry,
     ) {}
 
@@ -30,6 +31,27 @@ export class GoldPriceService {
         };
 
     }
+
+    /**
+     * 获取最新价格
+     * @returns 
+     */
+    async getLastestPrice(){
+        
+        await this.cronService.executeCronJob()
+        const goldPrice = await this.goldPriceRepository.createQueryBuilder('entity').orderBy('entity.id', 'DESC').getOne()
+        if (!goldPrice) {
+            throw new NotFoundException(`goldPrice not found`);
+        }
+        return {
+            '最新价格:':goldPrice.current,
+            '今日最高:':goldPrice.todayHigh,
+            '今日最低:':goldPrice.todayHigh,
+            '今日开盘:':goldPrice.todayStart,
+            '昨天收盘:':goldPrice.yestodayEnd
+        };
+
+    }    
 
     /**
      * 启动服务

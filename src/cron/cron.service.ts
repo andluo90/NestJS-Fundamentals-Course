@@ -18,7 +18,22 @@ export class CronService {
 
     @Cron(CronExpression.EVERY_DAY_AT_10PM,{name:'fetchGoldPrice'})
     async handleCron() {
-        
+        await this.handleData()
+
+
+    }
+
+    /**
+     * 执行定时任务（手动执行用）
+     */
+    async executeCronJob(){
+      return await this.handleData()
+    }
+
+    /**
+     * 处理数据
+     */
+    private async handleData(){
       try {
         const response = await this.httpService.get("https://www.5huangjin.com/data/jin.js", {
           headers: {
@@ -63,7 +78,6 @@ export class CronService {
         console.error('Error fetching data:', error);
         console.log(`save price error.`);
       }
-
     }
 
 }

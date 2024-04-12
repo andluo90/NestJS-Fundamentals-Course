@@ -15,6 +15,14 @@ export class GoldPriceController {
     }
 
     @IsPublic(true)
+    @Get('lastest-price')
+    lastestPrice() {
+      // console.log(typeof id);
+      return this.goldPriceService.getLastestPrice();
+    }    
+    
+
+    @IsPublic(true)
     @Post('startService')
     startService() {
       return this.goldPriceService.startService();
