@@ -17,7 +17,7 @@ async function bootstrap() {
       },
     }),
   );
-  app.useGlobalInterceptors(new LoggingInterceptor(), new TransformInterceptor(['/file','/audio/static','/gold-price/-price','/gold-price/lastest-price']));
+  app.useGlobalInterceptors(new LoggingInterceptor(), new TransformInterceptor(['/file','/audio/static','/gold-price/today-price','/gold-price/lastest-price']));
   app.useGlobalFilters(new HttpExceptionFilter())
 
   await app.listen(3000);

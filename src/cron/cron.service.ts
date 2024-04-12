@@ -60,8 +60,8 @@ export class CronService {
         // Process lines as before
         lines.forEach(line => {
           if (line.startsWith('var hq_str_gds_AUTD')) {
-            console.log("找到了...");
             let prices:string[] = line.split('=')[1].replace('"','').split(',');
+            
             let goldPrice = new GoldPrice()
             goldPrice.current = prices[0],
             goldPrice.todayHigh = prices[4],
@@ -69,7 +69,6 @@ export class CronService {
             goldPrice.yestodayEnd = prices[7],
             goldPrice.todayStart = prices[8],
             goldPrice.date = prices[12],
-            console.log(`save price success.`);
             this.goldPriceRepository.save(goldPrice)
 
           }
