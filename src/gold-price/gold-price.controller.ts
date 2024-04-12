@@ -15,13 +15,18 @@ export class GoldPriceController {
       res.setHeader('Content-Type', 'text/html')
       res.send(
         `<html>
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>金价</title>
+          </head>
           <body>
-            <h3>当前价格: ${price.current}</h2>
-            <h3>今日最高: ${price.todayHigh}</h2>
-            <h3>今日最低: ${price.todayLow}</h2>
-            <h3>今日开盘: ${price.todayStart}</h2>
-            <h3>昨天收盘: ${price.yestodayEnd}</h2>
-            <h3>日期: ${price.date}</h2>
+            <h2>当前价格: ${price.current}</h2>
+            <h2>今日最高: ${price.todayHigh}</h2>
+            <h2>今日最低: ${price.todayLow}</h2>
+            <h2>今日开盘: ${price.todayStart}</h2>
+            <h2>昨天收盘: ${price.yestodayEnd}</h2>
+            <h2>日期: ${price.date}</h2>
           </body>
         </html>`
       );
@@ -34,13 +39,18 @@ export class GoldPriceController {
       res.setHeader('Content-Type', 'text/html')
       res.send(
         `<html>
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>金价</title>
+          </head>
           <body>
-            <h3>最新价格: ${price.current}</h2>
-            <h3>今日最高: ${price.todayHigh}</h2>
-            <h3>今日最低: ${price.todayLow}</h2>
-            <h3>今日开盘: ${price.todayStart}</h2>
-            <h3>昨天收盘: ${price.yestodayEnd}</h2>
-            <h3>日期: ${price.date}</h2>
+            <h2>最新价格: ${price.current}</h2>
+            <h2>今日最高: ${price.todayHigh}</h2>
+            <h2>今日最低: ${price.todayLow}</h2>
+            <h2>今日开盘: ${price.todayStart}</h2>
+            <h2>昨天收盘: ${price.yestodayEnd}</h2>
+            <h2>日期: ${price.date}</h2>
           </body>
         </html>`
       );
