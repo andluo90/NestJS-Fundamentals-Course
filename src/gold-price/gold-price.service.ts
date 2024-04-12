@@ -27,7 +27,8 @@ export class GoldPriceService {
             '今日最高:':goldPrice.todayHigh,
             '今日最低:':goldPrice.todayHigh,
             '今日开盘:':goldPrice.todayStart,
-            '昨天收盘:':goldPrice.yestodayEnd
+            '昨天收盘:':goldPrice.yestodayEnd,
+            '日期':goldPrice.date,
         };
 
     }
@@ -48,7 +49,8 @@ export class GoldPriceService {
             '今日最高:':goldPrice.todayHigh,
             '今日最低:':goldPrice.todayLow,
             '今日开盘:':goldPrice.todayStart,
-            '昨天收盘:':goldPrice.yestodayEnd
+            '昨天收盘:':goldPrice.yestodayEnd,
+            '日期':goldPrice.date,
         };
 
     }    
