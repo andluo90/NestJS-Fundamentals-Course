@@ -19,7 +19,7 @@
 
 ### ### 生产环境
 
-#### 打包 
+#### 打包
 
 yarn build
 
@@ -42,3 +42,14 @@ nest g co `<name>`
 #### 生成服务
 
 nest g s `<name>`
+
+
+#### log path
+
+~/.logs/nestjs_app
+
+#### db path
+
+~/.sqlite
+
+ sh path
