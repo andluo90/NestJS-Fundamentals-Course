@@ -15,6 +15,7 @@ import { AudioModule } from './audio/audio.module';
 import { GoldPriceModule } from './gold-price/gold-price.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronModule } from './cron/cron.module';
+import { EmailModule } from './email/email.module';
 
 
 
@@ -54,7 +55,8 @@ import { CronModule } from './cron/cron.module';
     AudioModule,
     GoldPriceModule,
     ScheduleModule.forRoot(),
-    CronModule
+    CronModule,
+    EmailModule
   ],
   controllers: [AppController],
   providers: [AppService],

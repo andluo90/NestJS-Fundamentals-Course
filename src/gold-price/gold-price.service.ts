@@ -23,7 +23,7 @@ export class GoldPriceService {
         if (!goldPrice) {
             throw new NotFoundException(`goldPrice not found`);
         }
-        this.emailService.sendEmail('allenmiller0909@gmail.com','gold-price-today',`current gold price today:${goldPrice.current}`)
+        // await this.emailService.sendEmail('allenmiller0909@gmail.com','gold-price',`current gold price today:${goldPrice.current}`)
         
         return goldPrice
         // return {
