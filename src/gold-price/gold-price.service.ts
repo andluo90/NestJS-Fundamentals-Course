@@ -21,17 +21,10 @@ export class GoldPriceService {
         this.loggerService.log('Executing getTodayPrice()')
         const goldPrice = await this.goldPriceRepository.createQueryBuilder('entity').orderBy('entity.id', 'DESC').getOne()
         if (!goldPrice) {
+            this.loggerService.logError(`goldPrice not found`)
             throw new NotFoundException(`goldPrice not found`);
         }
         return goldPrice
-        // return {
-        //     '当前价格:':goldPrice.current,
-        //     '今日最高:':goldPrice.todayHigh,
-        //     '今日最低:':goldPrice.todayHigh,
-        //     '今日开盘:':goldPrice.todayStart,
-        //     '昨天收盘:':goldPrice.yestodayEnd,
-        //     '日期':goldPrice.date,
-        // };
 
     }
 
@@ -40,22 +33,15 @@ export class GoldPriceService {
      * @returns 
      */
     async getLastestPrice(){
+        this.loggerService.log('Executing getLastestPrice()')
         
         await this.cronService.executeCronJob()
         const goldPrice = await this.goldPriceRepository.createQueryBuilder('entity').orderBy('entity.id', 'DESC').getOne()
         if (!goldPrice) {
+            this.loggerService.logError(`goldPrice not found`)
             throw new NotFoundException(`goldPrice not found`);
         }
         return goldPrice
-
-        // return {
-        //     '最新价格:':goldPrice.current,
-        //     '今日最高:':goldPrice.todayHigh,
-        //     '今日最低:':goldPrice.todayLow,
-        //     '今日开盘:':goldPrice.todayStart,
-        //     '昨天收盘:':goldPrice.yestodayEnd,
-        //     '日期':goldPrice.date,
-        // };
 
     }    
 
@@ -64,16 +50,20 @@ export class GoldPriceService {
      * @returns 
      */
     async startService(){
+        this.loggerService.log('Executing startService()')
         let cronJob = this.schedulerRegistry.getCronJob('fetchGoldPrice')
 
         if(cronJob){
             if(cronJob.running){
+                this.loggerService.log('已启动')
                 return '已启动'
             }else{
+                this.loggerService.log('启动成功')
                 cronJob.start()
                 return '启动成功'
             }
         }else{
+            this.loggerService.log('找不到服务')
             return '找不到服务'
         }
 
@@ -84,15 +74,19 @@ export class GoldPriceService {
      * @returns 
      */
     async stopService(){
+        this.loggerService.log('Executing stopService()')
         let cronJob = this.schedulerRegistry.getCronJob('fetchGoldPrice')
         if(cronJob){
             if(cronJob.running){
+                this.loggerService.log('停止成功')
                 cronJob.stop()
                 return '停止成功'
             }else{
+                this.loggerService.log('已停止')
                 return '已停止'
             }
         }else{
+            this.loggerService.log('找不到服务')
             return '找不到服务'
         }
     }

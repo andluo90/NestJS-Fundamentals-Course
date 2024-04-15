@@ -28,4 +28,11 @@ export class LoggerService {
   log(message: string) {
     this.logger.info(message);
   }
+
+  logError(message: string) {
+    this.logger.error(message);
+  }
+  
+
+  
 }

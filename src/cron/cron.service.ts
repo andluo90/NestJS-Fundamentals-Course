@@ -4,6 +4,7 @@ import { Cron, CronExpression,SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EmailService } from 'src/email/email.service';
 import { GoldPrice } from 'src/gold-price/entities/gold-price.entity';
+import { LoggerService } from 'src/logger/logger.service';
 import { Repository } from 'typeorm';
 
 
@@ -15,17 +16,20 @@ export class CronService {
       @InjectRepository(GoldPrice)
       private readonly goldPriceRepository: Repository<GoldPrice>,
       private readonly httpService: HttpService,
-      private readonly emailService:EmailService
+      private readonly emailService:EmailService,
+      private readonly loggerService:LoggerService
     ) {}
 
     @Cron(CronExpression.EVERY_DAY_AT_10AM,{name:'fetchGoldPrice'})
     async handleCron() {
-        console.log(`start fetchGoldPrice...`);
-        
+        this.loggerService.log(`start fetchGoldPrice...`)
         const error = await this.handleData()
         if(error){
+          this.loggerService.log(`fetchGoldPrice error:`)
+          this.loggerService.logError(error)
           this.emailService.sendEmail('[定时任务-异常]-[fetchGoldPrice]',error.toString())
         }else{
+          this.loggerService.log(`fetchGoldPrice done`)
           this.emailService.sendEmail('[定时任务-成功]-[fetchGoldPrice]',`[定时任务-成功]-[fetchGoldPrice]'`)
         }
 
@@ -35,6 +39,7 @@ export class CronService {
      * 执行定时任务（手动执行用）
      */
     async executeCronJob(){
+      this.loggerService.log(`executeCronJob()`)
       const error = await this.handleData()
       if(error){
         this.emailService.sendEmail('[手动任务-异常]-[fetchGoldPrice]',error.toString())
@@ -48,6 +53,7 @@ export class CronService {
      * 处理数据
      */
     private async handleData(){
+      this.loggerService.log(`handleData()`)
       try {
         const response = await this.httpService.get("https://www.5huangjin.com/data/jin.js", {
           headers: {
@@ -91,6 +97,8 @@ export class CronService {
       } catch (error) {
         console.error('Error fetching data:', error);
         console.log(`save price error.`);
+        this.loggerService.logError(error)
+        
         return error
       }
     }
