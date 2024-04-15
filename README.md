@@ -43,7 +43,6 @@ nest g co `<name>`
 
 nest g s `<name>`
 
-
 #### log path
 
 ~/.logs/nestjs_app
@@ -52,4 +51,6 @@ nest g s `<name>`
 
 ~/.sqlite
 
- sh path
+#### sh path
+
+~/.bin/nestjs_app/
