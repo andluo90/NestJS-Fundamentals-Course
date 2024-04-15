@@ -26,10 +26,10 @@ export class EmailService {
     );
   }
 
-  async sendEmail(to: string, subject: string, text: string) {
+  async sendEmail(subject: string, text: string) {
     const mailOptions = {
-      from: 'andluo90@gmail.com',
-      to: to,
+      from: this.emailConfiguration.from,
+      to: this.emailConfiguration.to,
       subject: subject,
       text: text
     };

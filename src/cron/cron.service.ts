@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression,SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EmailService } from 'src/email/email.service';
 import { GoldPrice } from 'src/gold-price/entities/gold-price.entity';
 import { Repository } from 'typeorm';
 
@@ -13,13 +14,20 @@ export class CronService {
     constructor(
       @InjectRepository(GoldPrice)
       private readonly goldPriceRepository: Repository<GoldPrice>,
-      private readonly httpService: HttpService
+      private readonly httpService: HttpService,
+      private readonly emailService:EmailService
     ) {}
 
     @Cron(CronExpression.EVERY_DAY_AT_10PM,{name:'fetchGoldPrice'})
     async handleCron() {
-        await this.handleData()
-
+        console.log(`start fetchGoldPrice...`);
+        
+        const error = await this.handleData()
+        if(error){
+          this.emailService.sendEmail('[定时任务-异常]-[fetchGoldPrice]',error.toString())
+        }else{
+          this.emailService.sendEmail('[定时任务-成功]-[fetchGoldPrice]',`[定时任务-成功]-[fetchGoldPrice]'`)
+        }
 
     }
 
@@ -73,9 +81,11 @@ export class CronService {
 
           }
         });
+        return false
       } catch (error) {
         console.error('Error fetching data:', error);
         console.log(`save price error.`);
+        return error
       }
     }
 

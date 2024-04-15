@@ -3,6 +3,8 @@ import { registerAs } from '@nestjs/config';
 interface EmailConfig {
   username:string
   password:string
+  from:string
+  to:string
 }
 
 export {
@@ -10,18 +12,11 @@ export {
 }
 
 export default registerAs('email', ():EmailConfig => {
-    if(process.env.EMAIL_NAME){
-        return {
-            username: process.env.EMAIL_NAME || '',
-            password:process.env.EMAIL_PASSWORD || ''
-        }
-    }else{
-        console.error(`emailUserName empty`);
-        return {
-            username: '',
-            password:''
-        }
-    }
-    
+    return {
+        username: process.env.EMAIL_NAME || '',
+        password:process.env.EMAIL_PASSWORD || '',
+        from:process.env.EMAIL_FROM || '',
+        to:process.env.EMAIL_TO || ''
+    } 
 }
 );
