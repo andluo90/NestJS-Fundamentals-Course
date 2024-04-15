@@ -16,6 +16,7 @@ import { GoldPriceModule } from './gold-price/gold-price.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronModule } from './cron/cron.module';
 import { EmailModule } from './email/email.module';
+import { LoggerModule } from './logger/logger.module';
 import * as os from 'os';
 import * as path from 'path';
 
@@ -46,7 +47,8 @@ import * as path from 'path';
     GoldPriceModule,
     ScheduleModule.forRoot(),
     CronModule,
-    EmailModule
+    EmailModule,
+    LoggerModule
   ],
   controllers: [AppController],
   providers: [AppService],

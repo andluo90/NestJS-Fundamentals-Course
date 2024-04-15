@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CronService } from 'src/cron/cron.service';
-import { EmailService } from 'src/email/email.service';
+import { LoggerService } from 'src/logger/logger.service';
 import { Repository } from 'typeorm';
 import { GoldPrice } from './entities/gold-price.entity';
 
@@ -13,18 +13,16 @@ export class GoldPriceService {
         private readonly goldPriceRepository: Repository<GoldPrice>,
         private readonly cronService: CronService,
         private schedulerRegistry: SchedulerRegistry,
-        private readonly emailService:EmailService,
+        private readonly loggerService:LoggerService
     ) {}
 
 
     async getTodayPrice(){
-
+        this.loggerService.log('Executing getTodayPrice()')
         const goldPrice = await this.goldPriceRepository.createQueryBuilder('entity').orderBy('entity.id', 'DESC').getOne()
         if (!goldPrice) {
             throw new NotFoundException(`goldPrice not found`);
         }
-        // await this.emailService.sendEmail('allenmiller0909@gmail.com','gold-price',`current gold price today:${goldPrice.current}`)
-        
         return goldPrice
         // return {
         //     '当前价格:':goldPrice.current,
