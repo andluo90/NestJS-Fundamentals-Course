@@ -35,7 +35,13 @@ export class CronService {
      * 执行定时任务（手动执行用）
      */
     async executeCronJob(){
-      return await this.handleData()
+      const error = await this.handleData()
+      if(error){
+        this.emailService.sendEmail('[手动任务-异常]-[fetchGoldPrice]',error.toString())
+      }else{
+        this.emailService.sendEmail('[手动任务-成功]-[fetchGoldPrice]',`[手动任务-成功]-[fetchGoldPrice]'`)
+      }
+      return
     }
 
     /**
