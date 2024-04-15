@@ -6,6 +6,7 @@ import { TransformInterceptor } from './interceptors/TransformInterceptor';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
 
 async function bootstrap() {
+
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({

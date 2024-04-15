@@ -18,7 +18,7 @@ export class CronService {
       private readonly emailService:EmailService
     ) {}
 
-    @Cron(CronExpression.EVERY_5_MINUTES,{name:'fetchGoldPrice'})
+    @Cron(CronExpression.EVERY_DAY_AT_10AM,{name:'fetchGoldPrice'})
     async handleCron() {
         console.log(`start fetchGoldPrice...`);
         
