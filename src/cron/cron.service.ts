@@ -20,7 +20,7 @@ export class CronService {
       private readonly loggerService:LoggerService
     ) {}
 
-    @Cron(CronExpression.EVERY_DAY_AT_4PM,{name:'fetchGoldPrice',timeZone:'Asia/Shanghai'})
+    @Cron(CronExpression.EVERY_DAY_AT_1PM,{name:'fetchGoldPrice',timeZone:'Asia/Shanghai'})
     async handleCron() {
         this.loggerService.log(`start fetchGoldPrice...`)
         const error = await this.handleData()

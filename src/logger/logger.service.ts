@@ -13,6 +13,12 @@ export class LoggerService {
 
   constructor() {
     this.logger = winston.createLogger({
+      format: winston.format.combine(
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        winston.format.printf(({ level, message, timestamp }) => {
+          return `[${timestamp}] [${level.toUpperCase()}] ${message}`;
+        })
+      ),
       transports: [
         new DailyRotateFile({
           filename: path.join(logDir, '%DATE%.log'),
